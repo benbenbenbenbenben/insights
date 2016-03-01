@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Polymer Starter Kit">
+  <title>Mobility Insights</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#2E3AA1">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Mobility Insights">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/plugins/CSSPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/easing/EasePack.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenLite.min.js"></script>
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles">
+    .testclas {
+      background-color: var(--accent-color);
+    }
+
+  </style>
+</head>
+
+<body unresolved>
+  <span id="browser-sync-binding"></span>
+  <template is="dom-bind" id="app">
+      <!-- Main Content -->
+        <div class="content" id="mainContent" style="width: 100%; min-height: 100%; overflow: hidden;" on-track="track">
+          <!-- menu container -->
+          <bb-masonry id="masonry" style="width: 100%; min-height: 100%;" data="{{activeMenu}}" on-tap="tap" render-templates="{{renderTemplates}}" track-scrollable>
+          </bb-masonry>
+
+          <!-- url container -->
+          <div>
+            <iframe id="iframe0" style="border-width: 0px; height: 100%; width: 100%; position: absolute; top: 0px; left 0px; visibility: hidden;">
+            </iframe>
+          </div>
+
+          <!-- menu group container -->
+          <div>
+            <paper-dialog style="width: 90%; height:90%;" id="modal0dialog" modal="true">
+              <bb-masonry style="width: 100%; min-height: 100%; margin:0px; padding:0px;" data="{{activeGroup}}" render-templates="{{renderTemplates}}" track-scrollable>
+              </bb-masonry>
+            </paper-dialog>
+          </div>
+
+        </div>
+        <div>
+          <paper-toast id="toast" text="Hello world!" opened></paper-toast>
+        </div>
+  </template>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
+
+
+</body>
+
+</html>

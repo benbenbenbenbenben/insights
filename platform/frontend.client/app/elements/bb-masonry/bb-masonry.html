@@ -1,0 +1,357 @@
+<script src="../../bower_components/packery/dist/packery.pkgd.js"></script>
+<script src="../../bower_components/draggabilly/dist/draggabilly.pkgd.js"></script>
+
+<!-- <link rel="import" href="../polymer/polymer.html"> -->
+
+<dom-module id="bb-masonry">
+
+  <style>
+    :host {
+      display: block;
+      box-sizing: border-box;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .author img {
+      float: left;
+      margin-right: 5px;
+      max-height: 100px;
+      max-width: 100px;
+    }
+
+    /* highlight drag & drop */
+
+    /* Draggabilly adds is-dragging */
+    ::content .is-dragging {
+      z-index: 2; /* keep dragged item on top */
+    }
+    /* Packery adds class while transitioning to drop position */
+    ::content .is-positioning-post-drag {
+      z-index: 2; /* keep dragged item on top */
+    }
+    ::content .packery-drop-placeholder {
+      outline: 1px dashed #444;
+      outline-offset: -1px;
+      /* transition position changing */
+      -webkit-transition: -webkit-transform 0.0s;
+              transition: transform 0.0s;
+    }
+  </style>
+
+  <template>
+    <!-- <h1>&lt;seed-element&gt;</h1> -->
+    <div id="background" style="background: white; height: 100%; width: 100%;">
+      <div id="container">
+        <content></content>
+      </div>
+    </div>
+    <!-- <p class="author">
+      <img src="{{author.image}}">
+      Cheers,<br/>
+      <span class="name">{{author.name}}</span>
+    </p> -->
+  </template>
+
+</dom-module>
+
+<script>
+
+  NodeList.prototype.forEach = function(method) { for(var i = 0; i < this.length; i++) method(this[i], i, this); };
+  HTMLCollection.prototype.forEach = function(method) { for(var i = 0; i < this.length; i++) method(this[i], i, this); };
+
+  Polymer({
+
+    is: 'bb-masonry',
+
+    properties: {
+
+      /**
+       * `fancy` indicates that the element should don a monocle and tophat,
+       * while checking its pocket watch.
+       */
+      fancy: Boolean,
+
+      portraitColumns: {
+        type: Number,
+        value: 8,
+        notify: true,
+        observer: '_layoutDirty'
+      },
+
+      landscapeColumns: {
+        type: Number,
+        value: 8,
+        notify: true,
+        observer: '_layoutDirty'
+      },
+
+      renderTemplates: {
+        type: Array,
+        value: [],
+        notify: true,
+        observer: '_templatesChanged'
+      },
+
+      defaultTemplate: {
+        type: String,
+        value: '<div style="position: absolute; top: 1px; left: 1px; right: 1px; bottom:1px;"><div style="width:100%; height:100%; overflow:hidden;" render-target></div></div>'
+      },
+
+      data: {
+        type: Object,
+        value: null,
+        notify: true,
+        observer: '_dataChanged'
+      },
+
+      /**
+       * Describes the author of the element, but is really just an excuse to
+       * show off JSDoc annotations.
+       *
+       * @type {{name: string, image: string}}
+       */
+      author: {
+        type: Object,
+        // Use `value` to provides a default value for a property, by setting it
+        // on your element's prototype.
+        //
+        // If you provide a function, as we do here, Polymer will call that
+        // _per element instance_.
+        //
+        // We do that to ensure that each element gets its own copy of the
+        // value, rather than having it shared across all instances (via the
+        // prototype).
+        value: function() {
+          return {
+            name:  'Dimitri Glazkov',
+            image: 'http://41.media.tumblr.com/30b1b0d0a42bca3759610242a1ff0348/tumblr_nnjxy1GQAA1tpo3v2o1_540.jpg',
+          };
+        }
+      },
+
+    },
+
+    listeners: {
+    },
+
+    _templatesChanged: function(newValue, oldValue) {
+      // console.log('templates changed');
+    },
+
+    _dataChanged: function(newValue, oldValue) {
+      if (this.renderTemplates == null) {
+        return console.warn('renderTemplates is null');
+      }
+      if (newValue != oldValue) {
+        newValue = newValue || { items:[] };
+        // 'remove' children
+        this.$.container.innerHTML = '';
+
+        // 1. setup background
+        this.$.background.style.background = newValue.mainBackground || 'white';
+
+        // 2. setup children
+        newValue.items.forEach((function(item, i) {
+          var template = null;
+          var element = null;
+          if (item.template) {
+            template = this.renderTemplates.filter(function(t) { return t.name == item.template; })[0];
+          }
+          if (!template) {
+            template = { template: this.defaultTemplate };
+          }
+
+          var outer = document.createElement('div');
+          var inner = document.createElement('div');
+          inner.innerHTML = template.template;
+
+          var target = inner.querySelector('[render-target]');
+          if (target) {
+            target.style.background = item.background || newValue.iconBackground || 'white';
+            target.innerHTML = item.content;
+          }
+          var dataTarget = inner.querySelector('[data-target]');
+          if (dataTarget) {
+            dataTarget.style.background = item.background || newValue.iconBackground || 'white';
+            //
+            this.async(function() { dataTarget.data = item; });
+          }
+
+          outer.appendChild(inner.children[0]);
+
+          // size
+          if (item.size) {
+            outer.classList.add(`w${item.size}`);
+            outer.classList.add(`h${item.size}`);
+          } else {
+            if (item.width)
+              outer.classList.add(`w${item.width}`);
+            if (item.height)
+              outer.classList.add(`h${item.height}`);
+          }
+
+          outer.data = item;
+          outer.path = `items/${i}`;
+
+          if (this.hasAttribute('no-tap') == false)
+            outer.setAttribute('tap-sender', 'true');
+          this.$.container.appendChild(outer);
+
+          this.async((function() {
+            this._masonry.reloadItems();
+            this._resized();
+
+            // TODO stamp?
+            outer.setAttribute('draggable', true);
+            outer.draggie = new Draggabilly(outer);
+            // this could leak
+            this._masonry.bindDraggabillyEvents(outer.draggie);
+
+          }).bind(this));
+        }).bind(this));
+      }
+    },
+
+    _layoutDirty: function() {
+      console.log('layout dirty');
+      this.async(this._resized);
+    },
+
+    calculatedWidth: function() {
+      var contWidth = this.clientWidth;
+      return contWidth;
+    },
+
+    calculatedHeight: function() {
+      var contHeight = this.clientHeight;
+      return contHeight;
+    },
+
+    isLandscape: function() {
+      var landscape = this.calculatedWidth() > this.calculatedHeight();
+      return landscape;
+    },
+
+    _masonry: null,
+    _draggie: null,
+
+    _windowResized: function(event) {
+      this._resized.bind(this)(event);
+      this.$.container.querySelectorAll('bb-masonry').forEach(function(element) {
+          element._windowResized.bind(element)(event);
+      });
+    },
+
+    _resized: function(event) {
+      if (window['bb-masonry._resized']) {
+        this.async(this.resized);
+      }
+      window['bb-masonry._resized'] = window['bb-masonry._resized'] + 1 || 1;
+
+      var landscape = this.isLandscape();
+      var cwidth = this.calculatedWidth();
+      var cheight = this.calculatedHeight();
+      var unit = landscape ? (cheight / this.landscapeColumns) : (cwidth / this.portraitColumns);
+
+      // size default
+      this.$.container.children.forEach(function(child) {
+        child.style.width = `${unit * 2}px`;
+        child.style.height = `${unit * 2}px`;
+      });
+
+      var fBrickWidth = function(size) { return function(target) { target.style.width = `${size}px`; } };
+      var fBrickHeight = function(size) { return function(target) { target.style.height = `${size}px`; } };
+
+      this.$.container.querySelectorAll('.w1').forEach(fBrickWidth(unit));
+      this.$.container.querySelectorAll('.h1').forEach(fBrickHeight(unit));
+      this.$.container.querySelectorAll('.w2').forEach(fBrickWidth(2*unit));
+      this.$.container.querySelectorAll('.h2').forEach(fBrickHeight(2*unit));
+      this.$.container.querySelectorAll('.w4').forEach(fBrickWidth(4*unit));
+      this.$.container.querySelectorAll('.h4').forEach(fBrickHeight(4*unit));
+      this.$.container.querySelectorAll('.w8').forEach(fBrickWidth(8*unit));
+      this.$.container.querySelectorAll('.h8').forEach(fBrickHeight(8*unit));
+
+      this.$.container.style.height = `${cheight}px`;
+      this.$.container.style.width = `${cwidth}px`;
+
+      this._masonry.option({
+        horizontal: landscape,
+        columnWidth: unit,
+        rowHeight: unit
+      });
+
+      this._masonry.layout();
+      window['bb-masonry._resized']--;
+    },
+
+    // Element Lifecycle
+
+    ready: function() {
+      // `ready` is called after all elements have been configured, but
+      // propagates bottom-up. This element's children are ready, but parents
+      // are not.
+      //
+      // This is the point where you should make modifications to the DOM (when
+      // necessary), or kick off any processes the element wants to perform.
+
+      this._masonry = new Packery(this.$.container, {
+        columnWidth: 50,
+        transitionDuration: '0s'
+      });
+      if (window['bb-masonry.resize'] == null) {
+        window.addEventListener('resize', this._windowResized.bind(this));
+      }
+    },
+
+    attached: function() {
+      // `attached` fires once the element and its parents have been inserted
+      // into a document.
+      //
+      // This is a good place to perform any work related to your element's
+      // visual state or active behavior (measuring sizes, beginning animations,
+      // loading resources, etc).
+
+      this._masonry.layout();
+    },
+
+    detached: function() {
+      // The analog to `attached`, `detached` fires when the element has been
+      // removed from a document.
+      //
+      // Use this to clean up anything you did in `attached`.
+    },
+
+    // Element Behavior
+
+    /**
+     * The `seed-element-lasers` event is fired whenever `fireLasers` is called.
+     *
+     * @event seed-element-lasers
+     * @detail {{sound: String}}
+     */
+
+    /**
+     * Sometimes it's just nice to say hi.
+     *
+     * @param {string} greeting A positive greeting.
+     * @return {string} The full greeting.
+     */
+    sayHello: function(greeting) {
+      var response = greeting || 'Hello World!';
+      return 'seed-element says, ' + response;
+    },
+
+    /**
+     * Attempts to destroy this element's enemies with an any beam of light!
+     *
+     * Or, at least, dispatches an event in the vain hope that someone else will
+     * do the zapping.
+     */
+    fireLasers: function() {
+      this.fire('seed-element-lasers', {sound: 'Pew pew!'});
+    }
+
+  });
+
+</script>
