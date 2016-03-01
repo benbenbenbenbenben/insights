@@ -1,0 +1,25 @@
+{
+  "apps": [
+    {
+      // front end client
+      "name": "frontend_client",
+      "script": "index.js",
+      "watch": false,
+      "cwd": "platform/frontend.client"
+    },
+    {
+      // rest Service
+      "name": "rest",
+      "script": "index.js",
+      "watch": true,
+      "cwd": "platform/rest"
+    },
+    {
+      // data Service
+      "name": "data",
+      "script": "index.js",
+      "watch": true,
+      "cwd": "platform/data"
+    }
+  ]
+}

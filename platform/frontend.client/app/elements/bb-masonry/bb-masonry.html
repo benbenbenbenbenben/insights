@@ -152,30 +152,30 @@
         this.$.background.style.background = newValue.mainBackground || 'white';
 
         // 2. setup children
-        newValue.items.forEach((function(item, i) {
+        newValue.articles.forEach((function(item, i) {
           var template = null;
           var element = null;
-          if (item.template) {
-            template = this.renderTemplates.filter(function(t) { return t.name == item.template; })[0];
+          if (item.iconTemplate) {
+            template = this.renderTemplates.filter(function(t) { return t.name == item.iconTemplate; })[0];
           }
           if (!template) {
-            template = { template: this.defaultTemplate };
+            template = { source: this.defaultTemplate };
           }
 
           var outer = document.createElement('div');
           var inner = document.createElement('div');
-          inner.innerHTML = template.template;
+          inner.innerHTML = template.source;
 
           var target = inner.querySelector('[render-target]');
           if (target) {
-            target.style.background = item.background || newValue.iconBackground || 'white';
+            target.style.background = item.iconBackground || newValue.iconBackground || 'white';
             target.innerText = item.name;
             if (item.itemContent)
               target.innerHTML = item.itemContent;
           }
           var dataTarget = inner.querySelector('[data-target]');
           if (dataTarget) {
-            dataTarget.style.background = item.background || newValue.iconBackground || 'white';
+            dataTarget.style.background = item.iconBackground || newValue.iconBackground || 'white';
             //
             this.async(function() { dataTarget.data = item; });
           }
@@ -183,14 +183,14 @@
           outer.appendChild(inner.children[0]);
 
           // size
-          if (item.size) {
-            outer.classList.add(`w${item.size}`);
-            outer.classList.add(`h${item.size}`);
+          if (item.iconSize) {
+            outer.classList.add(`w${item.iconSize}`);
+            outer.classList.add(`h${item.iconSize}`);
           } else {
-            if (item.width)
-              outer.classList.add(`w${item.width}`);
-            if (item.height)
-              outer.classList.add(`h${item.height}`);
+            if (item.iconWidth)
+              outer.classList.add(`w${item.iconWidth}`);
+            if (item.iconHeight)
+              outer.classList.add(`h${item.iconHeight}`);
           }
 
           outer.data = item;

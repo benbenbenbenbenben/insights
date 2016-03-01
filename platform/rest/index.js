@@ -11,11 +11,13 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var async = require('async');
 var extend = require('extend');
+var cors = require('cors');
 
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 seneca.client({ host: 'localhost', port: 10101 });
 var data = {

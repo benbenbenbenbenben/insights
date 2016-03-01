@@ -34,6 +34,7 @@ async.series([
           { name: 'Mobility Quarter Report - Q4 2015',
             iconBackground: 'orange',
             iconTemplate: 'group',
+            iconSize: 4,
             articles: [
               {
                 name: 'Major accomplishments',

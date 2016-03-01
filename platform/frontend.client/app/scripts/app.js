@@ -109,119 +109,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.renderTemplates = [
-    { name: 'group', template: '<div style="position: absolute; top: 1px; left: 1px; right: 1px; bottom:1px; overflow:hidden;">' +
+    { name: 'group', source: '<div style="position: absolute; top: 1px; left: 1px; right: 1px; bottom:1px; overflow:hidden;">' +
                                   '<div><h2 style="margin:1px;" render-target></h2></div>' +
                                   '<bb-masonry style="width:100%; height:100%;" data-target no-tap="true"></bb-masonry>' +
                                   '' +
                                 '</div>' }
   ];
 
-  app.data = {
-    items: [
-      { content: '<div><h1 style="position:absolute; left: 5%;">A news bulletin goes here!</h1><p>how to use this tool...</p></div>', width: 8, height: 4, background: 'orange' },
-      { content: 'Mobility Portal 1',size: 8, background: 'green', template: 'group', items: [
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-        { content: 'foobar', background: 'yellow' },
-        { content: 'barfoo', background: 'orange' },
-        { content: 'barfoo', background: 'purple' },
-        { content: 'barfoo', background: 'limegreen' },
-      ]
-    },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-      { content: 'hello', size: 4, background: 'red' },
-    ]
-  };
+  app.data = null;
 
   app.activeMenu = app.data;
   app.activeGroup = app.data;
@@ -234,6 +129,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.__tpath= [];
   app.__tstart= 0;
   app.__vmouse= 0;
+
+  app.dashboardLoaded = function(event, request) {
+    app.data = request.response;
+    app.activeMenu = app.data[0];
+  }
 
 
   app.findAncestorWithAttribute = function(element, selector) {

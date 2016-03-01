@@ -57,6 +57,9 @@ var articleSchema = new mongoose.Schema({
   iconBackground: String,
   iconContent: String,
   iconTemplate: String,
+  iconSize: Number,
+  iconWidth: Number,
+  iconHeight: Number,
   permissions: {
     readers: {
       users: [{ user521: String }],

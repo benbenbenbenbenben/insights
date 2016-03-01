@@ -62,6 +62,18 @@
   <template is="dom-bind" id="app">
       <!-- Main Content -->
         <div class="content" id="mainContent" style="width: 100%; min-height: 100%; overflow: hidden;" on-track="track">
+
+          <!-- loading -->
+          <template is="dom-if" if="{{!data}}">
+            <div>loading...</div>
+          </template>
+          <iron-ajax
+            auto
+            url="http://localhost:3001/api/v1/dashboard"
+            handle-as="json"
+            on-response="dashboardLoaded"
+            debounce-duration="300"></iron-ajax>
+
           <!-- menu container -->
           <bb-masonry id="masonry" style="width: 100%; min-height: 100%;" data="{{activeMenu}}" on-tap="tap" render-templates="{{renderTemplates}}" track-scrollable>
           </bb-masonry>
