@@ -150,7 +150,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   app.tap = function(event) {
     var element = app.findAncestorWithAttribute(event.target, 'tap-sender');
     app.activeData = element.data;
-    if (app.activeData.items) {
+    if (app.activeData.articles) {
       app.activeGroup = app.activeData;
 
       //app.$.modal0dialog.querySelector('bb-masonry');
