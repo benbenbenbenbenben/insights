@@ -34,7 +34,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // have resolved and content has been stamped to the page
   app.addEventListener('dom-change', function() {
     console.log('Our app is ready to rock!');
+    app.dashboardLocation = 'http://' + window.location.hostname + ':3001/api/v1/dashboard';
   });
+
+  app.dashboardLocation = '';
 
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {

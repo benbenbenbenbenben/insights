@@ -170,8 +170,8 @@
           if (target) {
             target.style.background = item.iconBackground || newValue.iconBackground || 'white';
             target.innerText = item.name;
-            if (item.itemContent)
-              target.innerHTML = item.itemContent;
+            if (item.iconContent)
+              target.innerHTML = item.iconContent;
           }
           var dataTarget = inner.querySelector('[data-target]');
           if (dataTarget) {

@@ -31,10 +31,17 @@ async.series([
           { name: 'notice', source: '<div><div render-target></div></div>' }
         ],
         articles: [
-          { name: 'Mobility Quarter Report - Q4 2015',
+          {
+            name: 'Welcome',
+            iconContent: 'Welcome to Mobility Insights',
+            iconWidth: 8,
+            iconHeight: 4
+          },
+          {
+            name: 'Mobility Quarter Report - Q4 2015',
             iconBackground: 'orange',
             iconTemplate: 'group',
-            iconSize: 4,
+            iconSize: 8,
             articles: [
               {
                 name: 'Major accomplishments',

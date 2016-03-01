@@ -69,7 +69,7 @@
           </template>
           <iron-ajax
             auto
-            url="http://localhost:3001/api/v1/dashboard"
+            url={{dashboardLocation}}
             handle-as="json"
             on-response="dashboardLoaded"
             debounce-duration="300"></iron-ajax>
