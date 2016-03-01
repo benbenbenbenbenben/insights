@@ -62,7 +62,7 @@ exports.dataTests = {
   },
 
   aComplexDashboardCanBeCreated: test => {
-    test.expect(8);
+    test.expect(14);
     var dashboard = {
       name: 'default',
       description: 'default dashboard',
@@ -99,7 +99,18 @@ exports.dataTests = {
       test.ok(dashboard.itemRenderTemplates.length == response.itemRenderTemplates.length);
       test.ok(dashboard.articles.length == response.articles.length);
 
-      test.done();
+      seneca.act({role:'data', cmd:'getDashboard', dashboard: { _id:response._id } }, (error, response) => {
+        test.ok(dashboard.articles[0].name == response[0].articles[0].name);
+        test.ok(dashboard.articles[1].name == response[0].articles[1].name);
+        test.ok(dashboard.articles[2].name == response[0].articles[2].name);
+
+        test.ok(dashboard.articles[2].articles.length == response[0].articles[2].articles.length);
+
+        test.ok(dashboard.articles[2].articles[0].name == response[0].articles[2].articles[0].name);
+        test.ok(dashboard.articles[2].articles[1].name == response[0].articles[2].articles[1].name);
+
+        test.done();
+      });
     });
   },
 

@@ -169,7 +169,9 @@
           var target = inner.querySelector('[render-target]');
           if (target) {
             target.style.background = item.background || newValue.iconBackground || 'white';
-            target.innerHTML = item.content;
+            target.innerText = item.name;
+            if (item.itemContent)
+              target.innerHTML = item.itemContent;
           }
           var dataTarget = inner.querySelector('[data-target]');
           if (dataTarget) {
