@@ -234,6 +234,7 @@
     _unsetElementDraggable: function(element) {
       if (element.draggie) {
         this._masonry.unbindDraggabillyEvents(element.draggie);
+        element.draggie.disable();
         delete element.draggie;
       }
     },

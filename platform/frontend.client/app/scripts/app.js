@@ -149,8 +149,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   app.tap = function(event) {
     var element = app.findAncestorWithAttribute(event.target, 'tap-sender');
+    if (element == null)
+      return;
     app.activeData = element.data;
-    if (app.activeData.articles) {
+    if (app.activeData.content) {
+      switch (app.activeData.content.type) {
+        case 'link':
+          var _f = function() {
+            app.$.iframe0.style.visibility = 'visible';
+            app.$.iframe0.onload = null;
+            app.$.modal0dialog.close();
+          };          
+          app.$.iframe0.onload = _f;      
+          app.$.iframe0.src = app.activeData.content.data;
+          break;
+        default:
+          break;
+      }
+    }
+    else if (app.activeData.articles && app.activeData.articles.length) {
       app.activeGroup = app.activeData;
 
       //app.$.modal0dialog.querySelector('bb-masonry');
