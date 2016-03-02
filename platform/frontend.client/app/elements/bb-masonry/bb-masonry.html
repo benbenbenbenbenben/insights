@@ -25,6 +25,7 @@
     /* Draggabilly adds is-dragging */
     ::content .is-dragging {
       z-index: 2; /* keep dragged item on top */
+      opacity: 0.5;
     }
     /* Packery adds class while transitioning to drop position */
     ::content .is-positioning-post-drag {
@@ -206,12 +207,34 @@
 
             // TODO stamp?
             outer.setAttribute('draggable', true);
-            outer.draggie = new Draggabilly(outer);
-            // this could leak
-            this._masonry.bindDraggabillyEvents(outer.draggie);
 
           }).bind(this));
         }).bind(this));
+      }
+    },
+
+    _draggeryOnOff: function(activate) {
+      var elements = this.querySelectorAll('[draggable]');
+      elements.forEach((function(element) {
+        if (activate) {
+          this._setElementDraggable(element);
+        } else {
+          this._unsetElementDraggable(element);
+        }
+      }).bind(this));
+    },
+
+    _setElementDraggable: function(element) {
+      if (element.draggie == null) {
+        element.draggie = new Draggabilly(element);
+        this._masonry.bindDraggabillyEvents(element.draggie);
+      }
+    },
+
+    _unsetElementDraggable: function(element) {
+      if (element.draggie) {
+        this._masonry.unbindDraggabillyEvents(element.draggie);
+        delete element.draggie;
       }
     },
 
@@ -236,7 +259,6 @@
     },
 
     _masonry: null,
-    _draggie: null,
 
     _windowResized: function(event) {
       this._resized.bind(this)(event);
