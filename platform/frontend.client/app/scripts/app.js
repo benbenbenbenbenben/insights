@@ -189,6 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           if (nesw.averate > 3) {
             TweenLite.fromTo(app.$.iframe0, 0.5, { x: 0 }, { x: - (app.$.iframe0.clientWidth), onComplete: function() {
               app.iOSEventEnabled = false;
+              app.$.iframe0.style.visibility = 'hidden';
             } });
           }
         }
@@ -279,9 +280,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               app.$.modal0dialog.close();
             } });
             //app.$.modal0dialog.close();
+
           };
           app.$.iframe0.onload = _f;
           app.$.iframe0.src = app.activeData.content.data;
+
+          
+
           break;
         default:
           break;
