@@ -84,9 +84,123 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     console.log('show url');
   };
 
+  app.iOSEventEnabled = false;
+  app.__trackingIos = {
+    start: 0,
+    path: [],
+    tracking: false,
+    origin_x: 0,
+    origin_y: 0
+  };
   app.iOSEvent = function(data) {
-    app.showtoast('iOSEvent: ' + JSON.stringify(data));
-    return true;
+    if (app.iOSEventEnabled == false)
+      return;
+    data.timestamp = data.timestamp * 1000;
+    switch (data.type) {
+      case 'pan-start':
+        app.__trackingIos.start = data.timestamp;
+        app.__trackingIos.tracking = true;
+        app.__trackingIos.last = {
+          w: data.width,
+          h: data.height,
+          cross: Math.sqrt(data.width * data.height),
+          timestamp: app.__trackingIos.start,
+          x: data.x * data.scale,
+          y: data.y * data.scale,
+          dx: 0,
+          dy: 0,
+          ddx: 0,
+          ddy: 0,
+        };
+        app.__trackingIos.path = [app.__trackingIos.last];
+        app.__trackingIos.origin_x = app.__trackingIos.last.x;
+        app.__trackingIos.origin_y = app.__trackingIos.last.y;
+        break;
+      case 'pan':
+        if (data.timestamp - app.__trackingIos.last.timestamp < 5)
+          return;
+        app.__trackingIos.last = {
+          timestamp: data.timestamp,
+          x: data.x * data.scale,
+          y: data.y * data.scale,
+          dx: (data.x * data.scale) - app.__trackingIos.origin_x,
+          dy: (data.y * data.scale) - app.__trackingIos.origin_y,
+          ddx: (data.x * data.scale) - app.__trackingIos.last.x,
+          ddy: (data.y * data.scale) - app.__trackingIos.last.y,
+        };
+        app.__trackingIos.path.push(app.__trackingIos.last);
+        break;
+      case 'pan-end':
+        app.__trackingIos.last = {
+          timestamp: data.timestamp,
+          x: data.x * data.scale,
+          y: data.y * data.scale,
+          dx: (data.x * data.scale) - app.__trackingIos.origin_x,
+          dy: (data.y * data.scale) - app.__trackingIos.origin_y,
+          ddx: (data.x * data.scale) - app.__trackingIos.last.x,
+          ddy: (data.y * data.scale) - app.__trackingIos.last.y,
+        };
+        // TODO: there is no x or y here? i don't even know anymore
+        //app.__trackingIos.path.push(app.__trackingIos.last);
+
+        app.__trackingIos.tracking = false;
+
+        // process path
+        var tstart = app.__trackingIos.start;
+        var track = app.__trackingIos.path.slice(1).map(function(t, i, a) {
+          var time = t.timestamp - tstart;
+          tstart = t.timestamp;
+          var length = Math.sqrt(Math.pow(t.ddx, 2) + Math.pow(t.ddy, 2));
+          var theta = Math.atan2(t.ddx, t.ddy) * (180 / Math.PI);
+          theta = theta >= 0 ? theta : 360 + theta;
+          var rate = length / time;
+          return {
+            rate, theta, time, length
+          };
+        });
+
+        // gesturise path
+        var averate = 0;
+        var totlen = 0;
+        var totlenf = 0;
+        var nesw =  {
+            track: track.map(function(t, i, c) {
+              averate += (t.rate / c.length);
+              totlen += t.length;
+              var atheta = t.theta > 337.5 ? t.theta - 337.5 : t.theta + 22.5;
+              var nesw = Math.floor(atheta / 45);
+              return  { b: ['S', 'SE', 'E', 'NE', 'N', 'NW', 'W', 'SW'][nesw], r: t.rate.toFixed(3) };
+            })
+        };
+        nesw.averate = averate;
+        nesw.totlen = totlen;
+
+        // north flick
+        if (nesw.track.length > 0 && nesw.track.length == nesw.track.filter(function(p) { return p.b.indexOf('N') === 0; }).length)
+        {
+        }
+        // south flick
+        if (nesw.track.length > 0 && nesw.track.length == nesw.track.filter(function(p) { return p.b.indexOf('S') === 0; }).length)
+        {
+        }
+        // west flick
+        if (nesw.track.length > 0 && nesw.track.length == nesw.track.filter(function(p) { return p.b.indexOf('W') >= 0; }).length)
+        {
+          if (nesw.averate > 3) {
+            TweenLite.fromTo(app.$.iframe0, 0.5, { x: 0 }, { x: - (app.$.iframe0.clientWidth), onComplete: function() {
+              app.iOSEventEnabled = false;
+            } });
+          }
+        }
+        // east flick
+        if (nesw.track.length > 0 && nesw.track.length == nesw.track.filter(function(p) { return p.b.indexOf('E') >= 0; }).length)
+        {
+        }
+
+        break;
+      default:
+        break;
+    }
   };
 
   app.navigateStack = [];
@@ -158,9 +272,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var _f = function() {
             app.$.iframe0.style.visibility = 'visible';
             app.$.iframe0.onload = null;
-            app.$.modal0dialog.close();
-          };          
-          app.$.iframe0.onload = _f;      
+            TweenLite.fromTo(app.$.iframe0, 0.7, { x: 0, scale: 0.0 }, { scale: 1.0, onComplete: function() {
+              app.iOSEventEnabled = true;
+            } });
+            TweenLite.to(app.$.modal0dialog, 0.7, { scale: 10.0, opacity: 0.0, onComplete: function(){
+              app.$.modal0dialog.close();
+            } });
+            //app.$.modal0dialog.close();
+          };
+          app.$.iframe0.onload = _f;
           app.$.iframe0.src = app.activeData.content.data;
           break;
         default:
@@ -184,7 +304,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   app.track = function(event) {
     var element = app.findAncestorWithAttribute(event.target, 'track-scrollable');
-
+    if (element == null)
+      return;
     var parent = element.parentElement;
     var target = element;
     var currentTarget = element;
@@ -291,6 +412,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               var change = (nesw[nesw.length - 1].r * 200);
               // this.__tween = [TweenLite.fromTo(currentTarget, 0.4, { y: currentY }, { y: actual.toString() })];
               app.showtoast('east flick');
+              app.$.modal1dialog.toggle();
             }
 
             break;

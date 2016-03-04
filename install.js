@@ -33,7 +33,8 @@ async.series([
         articles: [
           {
             name: 'Welcome',
-            iconContent: 'Welcome to Mobility Insights',
+            iconContent: '<p style="font-size: 40px; font-weight: bolder; color: white; opacity: 0.5; position: absolute; bottom: -30px; left: 10px;">Mobility Insights</p>',
+            iconBackground: 'url(/images/Nvs_06730-s.jpg) no-repeat top left / cover',
             iconWidth: 8,
             iconHeight: 4
           },
@@ -41,10 +42,11 @@ async.series([
             name: 'Mobility Quarter Report - Q4 2015',
             iconBackground: 'orange',
             iconTemplate: 'group',
-            iconSize: 8,
+            iconSize: 4,
             articles: [
               {
                 name: 'Major accomplishments',
+                iconBackground: 'royalblue',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/02.html'
@@ -52,6 +54,7 @@ async.series([
               },
               {
                 name: 'Corporate devices overview',
+                iconBackground: 'firebrick',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/03.html'
@@ -59,6 +62,7 @@ async.series([
               },
               {
                 name: 'Distribution of corporate devices',
+                iconBackground: 'royalblue',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/04.html'
@@ -66,6 +70,7 @@ async.series([
               },
               {
                 name: 'BYOM',
+                iconBackground: 'firebrick',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/05.html'
@@ -73,6 +78,7 @@ async.series([
               },
               {
                 name: 'Mobile Apps Overview',
+                iconBackground: 'royalblue',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/06.html'
@@ -80,6 +86,7 @@ async.series([
               },
               {
                 name: 'Incident Management',
+                iconBackground: 'firebrick',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/07.html'
@@ -87,13 +94,45 @@ async.series([
               },
               {
                 name: 'Mobility Supporter Tool',
+                iconBackground: 'royalblue',
                 content: {
                   type: 'link',
                   data: 'http://192.37.61.19/_MobiReport_dashboard/Q42015/08.html'
                 }
               },
-
             ]
+          },
+          {
+            name: 'P1 Report',
+            iconBackground: 'teal',
+            content: {
+              type: 'link',
+              data: 'http://glchbs-sp320071.eu.novartis.net:8823/'
+            }
+          },
+          {
+            name: 'Backup and Restore Report',
+            iconBackground: 'yellowgreen',
+            content: {
+              type: 'link',
+              data: 'http://glchbs-st320047.eu.novartis.net:8804/'
+            }
+          },
+          {
+            name: 'Ticket Devices Ratio',
+            iconBackground: 'yellow',
+            content: {
+              type: 'link',
+              data: 'https://tableau-dev.novartis.net/t/GL_Mobility_Reports/views/Ticket-devicesratio/INC_dashboards?:embed=y&:showShareOptions=true&:toolbar=no&:display_count=no'
+            }
+          },
+          {
+            name: 'MAS Operational KPI',
+            iconBackground: 'skyblue',
+            content: {
+              type: 'link',
+              data: 'https://tableau-dev.novartis.net/t/GL_Mobility_Reports/views/MAS_operational_KPI/KPIoverview?:embed=y&:showShareOptions=true&:display_count=no'
+            }
           },
         ],
         permissions: {

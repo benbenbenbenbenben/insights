@@ -87,11 +87,18 @@
           <!-- menu group container -->
           <div>
             <paper-dialog style="width: 90%; height:90%;" id="modal0dialog" modal="true"
-                entry-animation="scale-up-animation"
-                exit-animation="slide-left-animation">
+                entry-animation="scale-up-animation">
               <div style="margin: 0px; padding: 4px;"><h2 style="margin:1px;">{{activeGroup.name}}</h2></div>
               <bb-masonry style="width: 100%; min-height: 100%; margin:0px; padding:0px;" on-tap="tap" data="{{activeGroup}}" render-templates="{{renderTemplates}}" track-scrollable>
               </bb-masonry>
+            </paper-dialog>
+          </div>
+
+          <!-- debug container -->
+          <div>
+            <paper-dialog style="width: 90%; height:90%;" id="modal1dialog" modal="true">
+              <div>{{debugData}}</div>
+              <paper-button dialog-dismiss>close</paper-button>
             </paper-dialog>
           </div>
 
