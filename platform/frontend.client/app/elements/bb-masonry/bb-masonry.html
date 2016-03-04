@@ -169,17 +169,19 @@
 
           var target = inner.querySelector('[render-target]');
           if (target) {
-            target.style.background = item.iconBackground || newValue.iconBackground || 'white';
+          //  target.style.background = item.iconBackground || newValue.iconBackground || 'white';
             target.innerText = item.name;
             if (item.iconContent)
               target.innerHTML = item.iconContent;
           }
           var dataTarget = inner.querySelector('[data-target]');
           if (dataTarget) {
-            dataTarget.style.background = item.iconBackground || newValue.iconBackground || 'white';
+          //  dataTarget.style.background = item.iconBackground || newValue.iconBackground || 'white';
             //
             this.async(function() { dataTarget.data = item; });
           }
+
+          inner.children[0].style.background = item.iconBackground || newValue.iconBackground || 'white';
 
           outer.appendChild(inner.children[0]);
 

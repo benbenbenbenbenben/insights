@@ -282,10 +282,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             //app.$.modal0dialog.close();
 
           };
-          app.$.iframe0.onload = _f;
-          app.$.iframe0.src = app.activeData.content.data;
 
-          
+          app.$.masonry.querySelectorAll('[tap-sender]').forEach(
+          	function(b) {
+              if (b != element) {
+            		setTimeout(function() {
+            			TweenLite.to(b, 0.4, { ease: Power2.easeIn, scale: 0, opacity: 0, onComplete: function() {
+            				setTimeout(function(){
+            					TweenLite.set(b, { clearProps:'scale, opacity' });
+
+                      app.$.iframe0.onload = _f;
+                      app.$.iframe0.src = app.activeData.content.data;
+
+            				}, 1000);
+            			}})
+            		}, parseInt(Math.random() * 100));
+              } else {
+                setTimeout(function() {
+                  TweenLite.to(b, 0.4, { ease: Power2.easeIn, scale: 100, backgroundColor: '#000000', onComplete: function() {
+
+                  }});
+                }, 200);
+              }
+          	}
+          );
 
           break;
         default:
