@@ -23,6 +23,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // app.baseUrl = '/polymer-starter-kit/';
   }
 
+  // TOOD refactor load handlbars helpers
+  Handlebars.compileAsync = function(tpl, callback) {
+    // TODO
+  };
+  Handlebars.registerHelper('tableau_qa_token', function() {
+    // TODO
+    return '';
+  });
+
   app.displayInstalledToast = function() {
     // Check to make sure caching is actually enabled—it won't be in the dev environment.
     if (!Polymer.dom(document).querySelector('platinum-sw-cache').disabled) {
@@ -270,9 +279,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     if (app.activeData.content) {
       switch (app.activeData.content.type) {
         case 'link':
+        case 'compute':
           var _f = function() {
             app.$.iframe0.style.visibility = 'visible';
             app.$.iframe0.onload = null;
+            app.$.iframe0.loadtime = 0;
+            clearInterval(app.$.iframe0.loadref);
+            console.log(app.$.iframe0.loadref);
             TweenLite.fromTo(app.$.iframe0, 0.7, { x: 0, scale: 0.0 }, { scale: 1.0, onComplete: function() {
               app.iOSEventEnabled = true;
             } });
@@ -290,10 +303,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             			TweenLite.to(b, 0.4, { ease: Power2.easeIn, scale: 0, opacity: 0, onComplete: function() {
             				setTimeout(function(){
             					TweenLite.set(b, { clearProps:'scale, opacity' });
-
                       app.$.iframe0.onload = _f;
+                      app.$.iframe0.loadtime = Date.now();
                       app.$.iframe0.src = app.activeData.content.data;
-
+                      app.$.iframe0.loadref = setInterval(function() {
+                        app.showtoast('loading...' + (Math.random() * 100).toFixed('0'));
+                      }, 500);
             				}, 1000);
             			}})
             		}, parseInt(Math.random() * 100));

@@ -16,6 +16,7 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
     "page": "^1.6.4",
     "packery": "^2.0.0",
-    "draggabilly": "^2.1.0"
+    "draggabilly": "^2.1.0",
+    "handlebars": "~4.0.5"
   }
 }

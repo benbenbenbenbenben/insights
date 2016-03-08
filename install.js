@@ -21,6 +21,26 @@ async.series([
   },
   done => {
     seneca.act({
+      role: 'data.test',
+      cmd: 'testmode',
+    }, function(error, response) {
+      if (error)
+        throw error;
+      done();
+    });
+  },
+  done => {
+    seneca.act({
+      role: 'data.test',
+      cmd: 'purge',
+    }, function(error, response) {
+      if (error)
+        throw error;
+      done();
+    });
+  },
+  done => {
+    seneca.act({
       role: 'data',
       cmd: 'saveDashboard',
       dashboard: {
@@ -132,6 +152,14 @@ async.series([
             content: {
               type: 'link',
               data: 'https://tableau-dev.novartis.net/t/GL_Mobility_Reports/views/MAS_operational_KPI/KPIoverview?:embed=y&:showShareOptions=true&:display_count=no'
+            }
+          },
+          {
+            name: 'ROD Dashboard v2 (QA)',
+            iconBackground: 'orange',
+            content: {
+              type: 'link',
+              data: '/gotableau/tableau-qa.novartis.net/trusted/{{tableau_qa_token}}/t/GL_Mobility_Reports/views/RODDashboards_v2/RoD_dashboard_iPhone?:embed=y&:showShareOptions=true&:display_count=no&:showVizHome=no#1'
             }
           },
         ],
