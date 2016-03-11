@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({extended:true}));
 // TODO refactor as plugin
 var hbPlugins = {
   tableau_qa_token: function(callback) {
-    getTableauToken(3, callback);
+    getTableauToken('tableau-qa.novartis.net', 3, callback);
   }
 };
-var getTableauToken = (seconds, send) => {
+var getTableauToken = (domain, seconds, send) => {
   var milliseconds = (seconds * 1000);
   var _die = function() {
     die = 0;
@@ -40,7 +40,7 @@ var getTableauToken = (seconds, send) => {
   var _f = function() {
     var options = {
       "method": "POST",
-      "hostname": "tableau-qa.novartis.net",
+      "hostname": domain,
       "port": null,
       "path": "/trusted",
       "headers": {
@@ -104,11 +104,19 @@ app.get('/version', (req, res) => {
   });
 });
 
-app.get('/tableau/:timeout?', (req, res) => { getTableauToken(req.params.timeout || 3, (msg) => { res.send(msg); }); });
+app.get('/tableau/:timeout?', (req, res) => { getTableauToken('tableau-qa.novartis.net', req.params.timeout || 3, (msg) => { res.send(msg); }); });
 
 app.get('/gotableau/*', (req, res) => {
-  getTableauToken(req.params.timeout || 3, (msg) => {
-    res.redirect('https://' + req.params[0].replace('{{tableau_qa_token}}', msg.token));
+  var url = req.url.replace('/gotableau/', '');
+  var domain = url.split('/')[0];
+  var path = url.replace(domain, '');
+  console.log({
+    url, domain, path
+  });
+  getTableauToken(domain, req.params.timeout || 3, (msg) => {
+    url = `https://${domain}/trusted/${msg.token}${path}`;
+    console.log(url);
+    res.redirect(url);
   });
 });
 

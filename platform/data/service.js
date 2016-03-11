@@ -2,11 +2,12 @@
 var S = require('string');
 var _ = require('underscore');
 var mongoose = require('mongoose');
-var seneca = require('seneca')({timeout:10000});
+var seneca = require('seneca')().use('seneca-amqp-transport');
 var async = require('async');
 var extend = require('extend');
 
-seneca.listen({host:'localhost', port:10101});
+// amqp://localhost
+seneca.listen({type:'amqp', pins:['data:*', 'data_test:*']});
 
 var lastModPlugin = function(schema, options) {
   schema.add({LastModified:Number});
@@ -96,11 +97,11 @@ class Service {
     this.connectDb();
 
     // test endpoints
-    seneca.add({role:'data.test', cmd:'testmode'}, (message, respond) => {
+    seneca.add('data_test:testmode', (message, respond) => {
       self.config.test = true;
       respond(null, {ok:true});
     });
-    seneca.add({role:'data.test', cmd:'purge'}, (message, respond) => {
+    seneca.add('data_test:purge', (message, respond) => {
       if (self.config.test) {
         async.series([
           done => self.user.remove({}, done),
@@ -119,13 +120,14 @@ class Service {
     //
 
     // seneca shortcut
-    var add = (cmd, callback) => seneca.add({role:'data', cmd:cmd}, callback);
+    var add = (cmd, callback) => seneca.add('data:' + cmd, callback);
 
     add('ok', (message, respond) => {
       respond(null, { started: started, status: 'ok', config: self.config });
     });
 
     add('configure', (message, respond) => {
+      console.log('configure');
       extend(this.config, message.config);
       this.connectDb();
       respond(null, { ok: true });

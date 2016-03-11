@@ -7,7 +7,7 @@ var _pfx = '/api/v1';
 var http = require("https");
 var express = require('express');
 var namespace = require('express-namespace');
-var seneca = require('seneca')({ timeout: 10000 });
+var seneca = require('seneca')().use('seneca-amqp-transport');
 var util = require('util');
 var fs = require('fs');
 var bodyParser = require('body-parser');
@@ -22,13 +22,20 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-seneca.client({ host: 'localhost', port: 10101 });
+seneca.client({type:'amqp', pins:['data:*', 'push:*']});
+
 var data = {
   act: (request, callback) => {
-    extend(request, { role:'data' });
-    seneca.act(request, callback);
+    var cmd = request.cmd;
+    seneca.act('data:' + cmd, request, callback);
   }
 };
+var push = {
+  act: (request, callback) => {
+    var cmd = request.cmd;
+    seneca.act('push:' + cmd, request, callback);
+  }
+}
 
 app.namespace(_pfx, () => {
   app.get('/ok', (req, res) => {
@@ -37,7 +44,6 @@ app.namespace(_pfx, () => {
   });
 
   app.get('/dashboard', (req, res) => {
-    console.log('getDashboard');
     data.act({
       cmd:'getDashboard',
       dashboard: {
@@ -45,7 +51,6 @@ app.namespace(_pfx, () => {
         // TODO user and group information
       }
     }, (error, response) => {
-      console.log('response');
       if (error)
         throw error;
       // TODO sanitize
@@ -53,6 +58,18 @@ app.namespace(_pfx, () => {
     });
   });
 
+  app.post('/push', (req, res) => {
+    console.log('pushing...');
+    push.act({
+      cmd: 'apns',
+      message: 'hello world from rest service',
+      body: req.body
+    }, (error, response) => {
+      if (error)
+        throw error;
+      res.send(response);
+    });
+  });
 
 });
 

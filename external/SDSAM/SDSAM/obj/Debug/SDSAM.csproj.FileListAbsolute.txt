@@ -1,0 +1,5 @@
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\SDSAM\bin\Debug\SDSAM.dll
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\SDSAM\bin\Debug\SDSAM.pdb
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\SDSAM\obj\Debug\SDSAM.csprojResolveAssemblyReference.cache
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\SDSAM\obj\Debug\SDSAM.dll
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\SDSAM\obj\Debug\SDSAM.pdb

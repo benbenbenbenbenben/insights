@@ -1,0 +1,11 @@
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\bin\Debug\SDSAM.dll
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\bin\Debug\SDSAM.pdb
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+\\glatku-sp170002.eu.novartis.net\babikbe1$\data\Visual Studio 2012\Projects\SDSAM\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+C:\Projects\MobilityReports\new\polymer\insights\external\SDSAM\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+C:\Projects\MobilityReports\new\polymer\insights\external\SDSAM\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+C:\Projects\MobilityReports\new\polymer\insights\external\SDSAM\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb

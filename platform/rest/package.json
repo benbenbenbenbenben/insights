@@ -15,6 +15,7 @@
     "express-namespace": "^0.1.1",
     "extend": "^3.0.0",
     "seneca": "^1.2.0",
+    "seneca-amqp-transport": "^0.2.0",
     "very-array": "^0.6.1"
   }
 }
