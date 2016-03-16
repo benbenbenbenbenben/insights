@@ -286,8 +286,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             app.$.iframe0.loadtime = 0;
             clearInterval(app.$.iframe0.loadref);
             console.log(app.$.iframe0.loadref);
-            TweenLite.fromTo(app.$.iframe0, 0.7, { x: 0, scale: 0.0 }, { scale: 1.0, onComplete: function() {
+            TweenLite.fromTo(app.$.iframe0, 0.7, { opacity: 0.0 }, { opacity: 1.0, onComplete: function() {
               app.iOSEventEnabled = true;
+              // TODO clear up TweenLite on tiles
             } });
             TweenLite.to(app.$.modal0dialog, 0.7, { scale: 10.0, opacity: 0.0, onComplete: function(){
               app.$.modal0dialog.close();
@@ -296,25 +297,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           };
 
+          app.$.iframe0.loadref = setInterval(function() {
+            app.showtoast('loading...');
+          }, 50);
+
           app.$.masonry.querySelectorAll('[tap-sender]').forEach(
-          	function(b) {
-              if (b != element) {
+          	function(el) {
+              if (el != element) {
             		setTimeout(function() {
-            			TweenLite.to(b, 0.4, { ease: Power2.easeIn, scale: 0, opacity: 0, onComplete: function() {
-            				setTimeout(function(){
-            					TweenLite.set(b, { clearProps:'scale, opacity' });
-                      app.$.iframe0.onload = _f;
-                      app.$.iframe0.loadtime = Date.now();
-                      app.$.iframe0.src = app.activeData.content.data;
-                      app.$.iframe0.loadref = setInterval(function() {
-                        app.showtoast('loading...' + (Math.random() * 100).toFixed('0'));
-                      }, 500);
-            				}, 1000);
+            			TweenLite.to(el, 0.4, { ease: Power2.easeIn, scale: 0, opacity: 0, onComplete: function() {
             			}})
             		}, parseInt(Math.random() * 100));
               } else {
                 setTimeout(function() {
-                  TweenLite.to(b, 0.4, { ease: Power2.easeIn, scale: 100, backgroundColor: '#000000', onComplete: function() {
+                  TweenLite.to(el.firstChild.children, 0.4, { opacity: 0.0 });
+                  TweenLite.to(el, 0.4, { ease: Power2.easeIn, scale: 100, backgroundColor: '#000000', onComplete: function() {
+                    
+                    //setTimeout(function() {
+                      // TODO: see line 291
+                      //TweenLite.set(el, { clearProps:'scale, opacity' });
+                      app.$.iframe0.onload = _f;
+                      app.$.iframe0.loadtime = Date.now();
+                      app.$.iframe0.src = app.activeData.content.data;
+                    //}, 100);
 
                   }});
                 }, 200);

@@ -22,8 +22,8 @@
       "cwd": "platform/data"
     },
     {
-      // push Service
-      "name": "push",
+      // apnspush Service
+      "name": "apnspush",
       "script": "index.js",
       "watch": true,
       "cwd": "platform/push"

@@ -202,6 +202,23 @@ class Service {
         });
       });
     });
+
+    add('registerDevice', (message, respond) => {
+      var detail = message.details;
+      self.user.findOne({ user521: details.user521 }, (error, result) => {
+        if (error)
+          throw error;
+        if (result == null)
+          return respond(null, { error: 'no such user' });
+        if (result.devices == null)
+          result.devices = [];
+        if (result.devices.map((f) => f.id).indexOf(detail.device) > -1)
+          return respond(null, { error: 'device already exists' });
+        result.devices.push({ id: detail.device });
+        result.save();
+        respond(null, result);
+      });
+    });
   }
 
   get connection_string_template() { return 'mongodb://{{server}}/{{database}}'; }
