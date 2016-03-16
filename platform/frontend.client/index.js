@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({extended:true}));
 // TODO refactor as plugin
 var hbPlugins = {
   tableau_qa_token: function(callback) {
-    getTableauToken('tableau-qa.novartis.net', 3, callback);
+    getTableauToken('tableau-qa.novartis.net', 'GL_Mobility_Reports', 3, callback);
   }
 };
-var getTableauToken = (domain, seconds, send) => {
+var getTableauToken = (domain, site, seconds, send) => {
   var milliseconds = (seconds * 1000);
   var _die = function() {
     die = 0;
@@ -72,7 +72,7 @@ var getTableauToken = (domain, seconds, send) => {
         });
       });
     });
-    r.write("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\neunet\\sys_mccre3\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"target_site\"\r\n\r\nGL_Mobility_Reports\r\n-----011000010111000001101001--");
+    r.write("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\neunet\\sys_mccre3\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"target_site\"\r\n\r\n" + site + "\r\n-----011000010111000001101001--");
     r.end();
   };
   _f();
@@ -109,11 +109,12 @@ app.get('/tableau/:timeout?', (req, res) => { getTableauToken('tableau-qa.novart
 app.get('/gotableau/*', (req, res) => {
   var url = req.url.replace('/gotableau/', '');
   var domain = url.split('/')[0];
+  var site = url.split('/')[2];
   var path = url.replace(domain, '');
   console.log({
     url, domain, path
   });
-  getTableauToken(domain, req.params.timeout || 3, (msg) => {
+  getTableauToken(domain, site, req.params.timeout || 3, (msg) => {
     url = `https://${domain}/trusted/${msg.token}${path}`;
     console.log(url);
     res.redirect(url);
